@@ -1,10 +1,15 @@
-import { Router, NextFunction, Request, Response }  from "express";
+import { Router}  from "express";
+import ProductsController from "../controllers/products.controller";
 
 const products = Router();
 
-products.get("/produtos", (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json({oK: true})
-})
+products.post("/produtos", ProductsController.newProduct);
+
+products.get("/produtos", ProductsController.showProducts);
+products.get("/produtos/:id", ProductsController.showProducts);
+products.get("produtos/categorias", ProductsController.showCategorys);
+products.get("/produtos/categoria/:Namecategoria", ProductsController.showProductToCategory);
+products.get("/produtos/destaques", ProductsController.showProductSpotlight);
 
 
 export default products;
