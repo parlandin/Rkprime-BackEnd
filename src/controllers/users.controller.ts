@@ -1,14 +1,17 @@
 import { NextFunction, Request, Response } from "express";
-import UserDB from "../database/models/user.model"; 
+import UserDB from "../database/models/user.model";
+import {hash} from "bcrypt"
 
 
 class UsersController {
 
     public async newUser(req: Request, res: Response){
-       
+        const {nome, email, senha, perfil_foto, cargo} = req.body;
+        const passwordHash = await hash(senha, 8);
+
         try {
-            const {nome, email, senha, perfil_foto, cargo} = req.body;
-            const newUser = await UserDB.create({nome, email, senha, perfil_foto, cargo});
+           
+            const newUser = await UserDB.create({nome, email, senha: passwordHash, perfil_foto, cargo});
             res.status(201).json({newUser});
             return;
 
