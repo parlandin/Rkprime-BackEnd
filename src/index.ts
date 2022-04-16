@@ -1,5 +1,6 @@
 import express, {Request, Response, NextFunction}  from "express";
 import products from "./routes/products.route";
+import users from "./routes/users.route";
 import MongoConnection from "./database/MongoConnection";
 const app = express()
 
@@ -18,6 +19,7 @@ MongoConnection.connect();
 
 
 //usando as rotas
+app.use(users)
 app.use(products)
 
 

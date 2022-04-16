@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { productsDB } from "../database/models/product.model";
-import {ProductType} from "../models/product.type"
+import productsDB from "../database/models/product.model"; 
 
 
 class ProductsController {

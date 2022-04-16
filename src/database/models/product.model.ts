@@ -1,21 +1,19 @@
-/* {
-    nome:
-    id: "hash"
-    uuid: 
-    descrição:
-    preço:
-    imagens: []
-    categoria: 
-    destaque: false
-    tags: []
-} */
+import {Schema, model, Document} from "mongoose";
 
 
-import mongoose from "mongoose";
+interface ProductInterface extends Document {
+    nome: string;
+    descricao: string;
+    preco: number;
+    imagens: Array<string>;
+    categoria: string;
+    destaque?: boolean; 
+    tags: Array<string>;
+    quantidade: number;
+}
 
-const Schema = mongoose.Schema
 
-const schema_url = new Schema({
+const ProductSchema = new Schema({
 	nome: {
 		type: String,
 		required: true
@@ -40,6 +38,10 @@ const schema_url = new Schema({
         type: Boolean,
         required: false
     },
+    quantidade: {
+        type: Number,
+        required: true
+    },
     tags: {
         type: Array,
         required: false
@@ -47,4 +49,4 @@ const schema_url = new Schema({
 	
 })
 
-export const productsDB = mongoose.model('Produtos', schema_url);
+export default model<ProductInterface>('Produtos', ProductSchema);
