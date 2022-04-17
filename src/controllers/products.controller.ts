@@ -6,8 +6,8 @@ class ProductsController {
 
     public async newProduct(req: Request, res: Response){
         try {
-            const {nome, descricao, preco, imagens, categoria, destaque, tags} = req.body;
-            const newProduct = await productsDB.create({nome, descricao, preco, imagens, categoria, destaque, tags});
+            const {nome, descricao, preco, imagens, categoria, destaque, tags, quantidade} = req.body;
+            const newProduct = await productsDB.create({nome, descricao, preco, imagens, categoria, destaque, tags, quantidade});
             res.status(201).json({newProduct});
             return;
 
@@ -83,8 +83,8 @@ class ProductsController {
     public async updateProduct(req: Request, res: Response){
         try {
             const { id } = req.params;
-            const {nome, descricao, preco, imagens, categoria, destaque, tags} = req.body;
-            await productsDB.updateOne({_id: id}, {$set: {nome, descricao, preco, imagens, categoria, destaque, tags}}); 
+            const {nome, descricao, preco, imagens, categoria, destaque, tags , quantidade} = req.body;
+            await productsDB.updateOne({_id: id}, {$set: {nome, descricao, preco, imagens, categoria, destaque, tags, quantidade}}); 
             res.sendStatus(200);
             return;
 
