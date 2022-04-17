@@ -10,11 +10,13 @@ class ProductsController {
         const images = req.files
         const dateRequest = JSON.parse(req.body.data)
 
+       
+
         try {
             let imagesOptions = [];
             if(images){
                 for(let file of images){
-                    const upload = await cloudinary.uploader.upload(file.path);
+                    const upload = await cloudinary.uploader.upload(file.path,{folder: "products"});
                     imagesOptions.push({imageID: upload.public_id, imageURL: upload.secure_url});
                 } 
             }
