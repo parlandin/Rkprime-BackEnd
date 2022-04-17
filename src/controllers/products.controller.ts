@@ -10,8 +10,6 @@ class ProductsController {
         const images = req.files
         const dateRequest = JSON.parse(req.body.data)
 
-       
-
         try {
             let imagesOptions = [];
             if(images){
@@ -36,7 +34,7 @@ class ProductsController {
 
     public async showProducts(req: Request, res: Response){
         try {
-            const products = await productsDB.find();
+            const products = await productsDB.find({}, '_id nome descricao preco imagens.imageURL categoria quantidade tags');
             res.status(200).json(products);
             return;
 
@@ -60,7 +58,6 @@ class ProductsController {
             res.sendStatus(500);
             return;
         }
-        
     }
 
     public showCategorys(req: Request, res: Response){
@@ -112,8 +109,18 @@ class ProductsController {
     }
 
     public async deleteProduct(req: Request, res: Response) {
+        const { id } = req.params;
         try {
-            const { id } = req.params;
+
+            const {imagens} = await productsDB.findOne({_id: id}, 'imagens.imageID');
+
+
+            if(imagens !== null || imagens.length > 0 ){
+                for(let file of imagens){
+                    await cloudinary.uploader.destroy(file.imageID);
+                }
+            }
+
             await productsDB.deleteOne({_id: id});
             res.sendStatus(200);
             return;
