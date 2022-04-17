@@ -1,7 +1,9 @@
 import { Router}  from "express";
 import UsersController from "../controllers/users.controller";
+import isSession from "../middleware/session.middle";
 
 const userRouter = Router();
+userRouter.use(isSession)
 
 userRouter.get("/users", UsersController.showUsers);
 userRouter.get("/users/:id", UsersController.showUserById);

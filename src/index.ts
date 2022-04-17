@@ -21,8 +21,9 @@ MongoConnection.connect();
 
 //usando as rotas
 app.use(Session);
-app.use(users);
 app.use(products);
+app.use(users);
+
 
 
 
