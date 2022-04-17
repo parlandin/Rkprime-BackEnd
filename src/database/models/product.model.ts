@@ -45,7 +45,8 @@ const ProductSchema = new Schema({
     tags: {
         type: Array,
         required: false
-    }
+    }, 
+    cloudinary_id: String
 	
 })
 

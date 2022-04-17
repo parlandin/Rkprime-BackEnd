@@ -1,13 +1,27 @@
 import { NextFunction, Request, Response } from "express";
-import productsDB from "../database/models/product.model"; 
+import productsDB from "../database/models/product.model";
+/* import { v2 as cloudinary } from 'cloudinary' */
+const {cloudinary} = require("../utils/cloudinary");
 
 
 class ProductsController {
 
-    public async newProduct(req: Request, res: Response){
+    public async newProduct(req: Request, res: Response){   
+        const images = req.files
+        const dateRequest = JSON.parse(req.body.data)
+
         try {
-            const {nome, descricao, preco, imagens, categoria, destaque, tags, quantidade} = req.body;
-            const newProduct = await productsDB.create({nome, descricao, preco, imagens, categoria, destaque, tags, quantidade});
+            let imagesOptions = [];
+            if(images){
+                for(let file of images){
+                    const upload = await cloudinary.uploader.upload(file.path);
+                    imagesOptions.push({imageID: upload.public_id, imageURL: upload.secure_url});
+                } 
+            }
+            
+
+            const {nome, descricao, preco, categoria, destaque, tags, quantidade} = dateRequest;
+            const newProduct = await productsDB.create({nome, descricao, preco, imagens: imagesOptions, categoria, destaque, tags, quantidade});
             res.status(201).json({newProduct});
             return;
 

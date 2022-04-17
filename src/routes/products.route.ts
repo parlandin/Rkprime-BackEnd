@@ -2,6 +2,8 @@ import { Router}  from "express";
 import ProductsController from "../controllers/products.controller";
 import isSession from "../middleware/session.middle";
 
+import multerConfig from "../utils/multer";
+
 const products = Router();
 products.get("/produtos", ProductsController.showProducts);
 products.get("/produtos/categorias", ProductsController.showCategorys);
@@ -11,7 +13,7 @@ products.get("/produtos/:id", ProductsController.showProductById);
 
 
 products.use(isSession)
-products.post("/produtos", ProductsController.newProduct);
+products.post("/produtos", multerConfig.array('images', 5) , ProductsController.newProduct);
 products.put("/produtos/:id", ProductsController.updateProduct);
 //products.patch("/produtos/:id", ProductsController.newProduct);
 products.delete("/produtos/:id", ProductsController.deleteProduct);
