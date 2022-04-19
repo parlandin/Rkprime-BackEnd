@@ -4,9 +4,10 @@ import users from "./routes/users.route";
 import Session from "./routes/sessions.route";
 import MongoConnection from "./database/MongoConnection";
 import cors from 'cors';
+//import routeImages from "./routes/images.route";
 
 
-const app = express()
+const app = express();
 
 //porta do servidor
 const port = process.env.PORT || 5000;
@@ -15,14 +16,15 @@ const port = process.env.PORT || 5000;
 //Configurações do servidor
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cors());
 
 
 //conectado com o bando de dados
 MongoConnection.connect();
 
 
-app.use(cors())
 //usando as rotas
+app.use(express.static(__dirname + '/public'));
 app.use(Session);
 app.use(products);
 app.use(users);
