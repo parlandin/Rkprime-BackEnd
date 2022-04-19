@@ -3,8 +3,10 @@ import products from "./routes/products.route";
 import users from "./routes/users.route";
 import Session from "./routes/sessions.route";
 import MongoConnection from "./database/MongoConnection";
-const app = express()
+import cors from 'cors';
 
+
+const app = express()
 
 //porta do servidor
 const port = process.env.PORT || 5000;
@@ -19,6 +21,7 @@ app.use(express.urlencoded({extended: true}));
 MongoConnection.connect();
 
 
+app.use(cors())
 //usando as rotas
 app.use(Session);
 app.use(products);
