@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import 'dotenv/config';
+import config from "../config/database"
 
 class MongoConnection {
     public async connect(): Promise<void> {
         try {
-            await mongoose.connect(process.env.MONGO_CONNECTION);
+            await mongoose.connect(config.hostlocal);
             console.log("database conectdado");
             
         }catch(error){
