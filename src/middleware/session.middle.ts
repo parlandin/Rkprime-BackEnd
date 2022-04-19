@@ -4,7 +4,7 @@ import AuthConfig from "../config/auth"
 
 export default function isSession(req: Request, res: Response, next: NextFunction){
     const header = req.headers.authorization;
-
+    
     if(!header) return res.status(404).json({message: "authorization invalid"});
 
     const [type, token] = header.split(" ");
