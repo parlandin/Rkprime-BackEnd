@@ -1,6 +1,7 @@
 import { Router}  from "express";
 import ProductsController from "../controllers/products.controller";
 import isSession from "../middleware/session.middle";
+import updateImage from "../services/firebase";
 
 import multerConfig from "../utils/multer";
 
@@ -20,9 +21,8 @@ products.delete("/produtos/:id", ProductsController.deleteProduct);
 
 
 
-products.post("/rotatest",  multerConfig.single('images'), (req, res) => {
+products.post("/rotatest",  multerConfig.single('images'), updateImage  ,(req, res) => {
     console.log(req.file)
-    console.log(JSON.parse(req.body.data))
     res.status(200).json({message: "tudo certo"})
 });
 
