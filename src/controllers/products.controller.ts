@@ -1,26 +1,24 @@
 import { NextFunction, Request, Response } from "express";
 import productsDB from "../database/models/product.model";
 
+
 class ProductsController {
 
     public async newProduct(req: Request, res: Response){   
         //const images = req.files
-        const images = req.file?.path
+        
+        if(!req.file?.imageID) return res.status(404).json({message: "arquivo não enviado"})
+
+        const images = req.file.imageID
         const dateRequest = JSON.parse(req.body.data)
 
         const img =[
-            {
-                imageID: "products/sclx64gdudvnz9yxxks8",
-                imageURL: "https://res.cloudinary.com/rkprime/image/upload/v1650228205/products/sclx64gdudvnz9yxxks8.jpg"
-            },
-            {
-                imageID: "products/vluqxvliesapxxluwkx0",
-                imageURL: "https://res.cloudinary.com/rkprime/image/upload/v1650228204/products/vluqxvliesapxxluwkx0.jpg"
-            },
-            {
-                imageID: "products/ydhakndxat6gxofpzznc",
-                imageURL: "https://res.cloudinary.com/rkprime/image/upload/v1650228206/products/ydhakndxat6gxofpzznc.jpg"
-            }]
+            images,
+            "1rwrR9ZLre2Cz6sUgQsl-OyrsefUxppPt",
+            "1nNbQdmbTKkzwLTY0WobeR7AOut69Bvsj", 
+            "1lJwEoPpgqj5tzDLyEw4ZQG_SHKXPQWTC"
+        ]
+           
 
         try {
             
