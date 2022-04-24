@@ -1,7 +1,7 @@
-import { NextFunction, Request,  Response } from "express";
+import { NextFunction, Request,  response,  Response } from "express";
+import file from 'multer'
 import { google } from "googleapis";
 import fs from "fs"
-
 
 
 const driveID = '1F_Q_jjqSIyeGS5g2Vz5tQ1ydmOk_vwQa'
@@ -16,7 +16,9 @@ const driveSerivce = google.drive({
     auth
 });
 
-async function uploadFile(req: Request, res: Response, next: NextFunction){
+
+
+export async function uploadFile(req: Request, res: Response, next: NextFunction){
     try {
         if (!req.file) next()
 
@@ -40,14 +42,26 @@ async function uploadFile(req: Request, res: Response, next: NextFunction){
 
         // "https://drive.google.com/uc?export=view&id="
         
-        req.file?.imageID = response.data.id
+        req.file?.imageID  = response.data.id
         next()
 
     } catch (error) {
         console.log(error);
         next()
     }
-
 }
 
-export default uploadFile; 
+
+export async function deleteFile(imageID:string) {
+    try{
+        const response = await driveSerivce.files.delete({
+            fileId: imageID
+        });
+        return response.status;
+
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+

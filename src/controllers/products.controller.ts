@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import productsDB from "../database/models/product.model";
+import {deleteFile} from "../services/drive"
 
 
 class ProductsController {
@@ -37,7 +38,7 @@ class ProductsController {
 
     public async showProducts(req: Request, res: Response){
         try {
-            const products = await productsDB.find({}, '_id nome descricao preco imagens.imageURL categoria quantidade tags');
+            const products = await productsDB.find({}, '_id nome descricao preco imagens categoria quantidade tags');
             res.status(200).json(products);
             return;
 
@@ -118,15 +119,15 @@ class ProductsController {
         const { id } = req.params;
         try {
 
-            const {imagens} = await productsDB.findOne({_id: id}, 'imagens.imageID');
+            const {imagens} = await productsDB.findOne({_id: id}, 'imagens');
 
 
             if(imagens !== null || imagens.length > 0 ){
-                for(let file of imagens){
-                    await cloudinary.uploader.destroy(file.imageID);
+                //for(let file of imagens){
+                    await deleteFile(imagens[0]);
+                    
                 }
-            }
-
+           
             await productsDB.deleteOne({_id: id});
             res.sendStatus(200);
             return;
