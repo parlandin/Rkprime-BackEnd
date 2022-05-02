@@ -4,7 +4,7 @@ import users from "./routes/users.route";
 import Session from "./routes/sessions.route";
 import MongoConnection from "./database/MongoConnection";
 import cors from 'cors';
-//import routeImages from "./routes/images.route";
+import path from "path";
 
 
 const app = express();
@@ -24,7 +24,7 @@ MongoConnection.connect();
 
 
 //usando as rotas
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.resolve(__dirname + '/public')));
 app.use(Session);
 app.use(products);
 app.use(users);

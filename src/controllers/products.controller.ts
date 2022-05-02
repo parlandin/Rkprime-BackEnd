@@ -6,18 +6,25 @@ import {deleteFile} from "../services/drive"
 class ProductsController {
 
     public async newProduct(req: Request, res: Response){   
-        //const images = req.files
         
-        if(!req.file?.imageID) return res.status(404).json({message: "arquivo não enviado"})
+        //if(!req.file?.imageID) return res.status(404).json({message: "arquivo não enviado"})
+        if(!req.file) return res.status(404).json({message: "arquivo não enviado"})
 
-        const images = req.file.imageID
+        //const images = req.file.imageID
+        const image = req.file.filename
         const dateRequest = JSON.parse(req.body.data)
 
-        const img =[
+        /* const img =[
             images,
             "1rwrR9ZLre2Cz6sUgQsl-OyrsefUxppPt",
             "1nNbQdmbTKkzwLTY0WobeR7AOut69Bvsj", 
             "1lJwEoPpgqj5tzDLyEw4ZQG_SHKXPQWTC"
+        ] */
+        const img = [
+            `http://localhost:5000/images/${image}`,
+            "http://localhost:5000/images/402c204efe-meramente ilustrativo.jpg",
+            "http://localhost:5000/images/02d24881c1-meramente ilustrativo2.jpg",
+            "http://localhost:5000/images/6c97e1ef27-Sem Título-1.jpg"
         ]
            
 
@@ -38,7 +45,7 @@ class ProductsController {
 
     public async showProducts(req: Request, res: Response){
         try {
-            const products = await productsDB.find({}, '_id nome descricao preco imagens categoria quantidade tags');
+            const products = await productsDB.find({em_breve: false}, '_id nome descricao preco imagens categoria quantidade tags');
             res.status(200).json(products);
             return;
 
