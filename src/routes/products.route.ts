@@ -16,15 +16,15 @@ products.get("/produtos/:id", ProductsController.showProductById);
 
 
 products.use(isSession)
-products.post("/produtos", multerConfig.single('images'), uploadFile,  ProductsController.newProduct);
+products.post("/produtos", multerConfig.single('images'), ProductsController.newProduct);
 products.put("/produtos/:id", ProductsController.updateProduct);
 //products.patch("/produtos/:id", ProductsController.newProduct);
 products.delete("/produtos/:id", ProductsController.deleteProduct);
 
 
 
-products.post("/rotatest",  multerConfig.single('images'), uploadFile, (req, res) => {
-    console.log(req.file.imageID)
+products.post("/rotatest",  multerConfig.single('images'), (req, res) => {
+    console.log(req.file)
     res.status(200).json({message: "tudo certo"})
 });
 
