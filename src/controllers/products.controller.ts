@@ -45,7 +45,7 @@ class ProductsController {
 
     public async showProducts(req: Request, res: Response){
         try {
-            const products = await productsDB.find({em_breve: false}, '_id nome descricao preco imagens categoria quantidade tags');
+            const products = await productsDB.find({em_breve: false}, '_id nome descricao preco imagens categoria quantidade tags destaque');
             res.status(200).json(products);
             return;
 
