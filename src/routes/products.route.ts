@@ -13,6 +13,7 @@ products.get("/produtos/categorias", ProductsController.showCategorys);
 products.get("/produtos/categoria/:Namecategoria", ProductsController.showProductByCategory);
 products.get("/produtos/destaques", ProductsController.showProductSpotlight);
 products.get("/produtos/:id", ProductsController.showProductById);
+products.get("/produtos/like/:tags", ProductsController.showProductLikeTags);
 
 
 products.use(isSession)
