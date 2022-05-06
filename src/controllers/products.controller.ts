@@ -107,6 +107,26 @@ class ProductsController {
         }
     }
 
+    public async showProductLikeTags(req: Request, res: Response){
+        try {
+            const {tags} = req.params;
+            const [tag, urlTags] = tags.split('=');
+            const arrayTags =  urlTags.slice(0, urlTags.length ).split(",");
+            const products = await productsDB.find({tags: {$in: arrayTags}}).limit(8);
+
+            if(products.length == 0) return res.status(404).json({message: "sem resultado"});
+
+            res.status(200).json(products);
+            return;
+
+        }catch (error){
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+       
+    }
+
     public async updateProduct(req: Request, res: Response){
         try {
             const { id } = req.params;
