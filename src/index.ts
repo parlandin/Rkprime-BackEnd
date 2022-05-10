@@ -2,6 +2,7 @@ import express, {Request, Response, NextFunction}  from "express";
 import products from "./routes/products.route";
 import users from "./routes/users.route";
 import Session from "./routes/sessions.route";
+import status from "./routes/status.route";
 import MongoConnection from "./database/MongoConnection";
 import cors from 'cors';
 import path from "path";
@@ -32,6 +33,7 @@ MongoConnection.connect();
 
 //usando as rotas
 app.use(express.static(path.resolve(__dirname + '/public')));
+app.use(status)
 app.use(Session);
 app.use(products);
 app.use(users);
@@ -39,12 +41,7 @@ app.use(users);
 
 
 
-//status do servidor
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
-    res.sendStatus(200);
-})
-
-
+//iniciando o servidor
 app.listen(port, (() => {
     console.log(`aplicação online na porta: ${port}`)
 }))
