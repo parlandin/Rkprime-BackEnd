@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const products_controller_1 = __importDefault(require("../controllers/products.controller"));
+const session_middle_1 = __importDefault(require("../middleware/session.middle"));
+const multer_1 = __importDefault(require("../utils/multer"));
+const products = (0, express_1.Router)();
+products.get("/produtos", products_controller_1.default.showProducts);
+products.get("/produtos/categorias", products_controller_1.default.showCategorys);
+products.get("/produtos/categoria/:Namecategoria", products_controller_1.default.showProductByCategory);
+products.get("/produtos/destaques", products_controller_1.default.showProductSpotlight);
+products.get("/produtos/:id", products_controller_1.default.showProductById);
+products.get("/produtos/like/:tags", products_controller_1.default.showProductLikeTags);
+products.use(session_middle_1.default);
+products.post("/produtos", multer_1.default.single('images'), products_controller_1.default.newProduct);
+products.put("/produtos/:id", products_controller_1.default.updateProduct);
+products.delete("/produtos/:id", products_controller_1.default.deleteProduct);
+exports.default = products;
