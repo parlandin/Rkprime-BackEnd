@@ -63,7 +63,7 @@ class ProductsController {
     }
 
     public showCategorys(req: Request, res: Response){
-        const categorys = ["acessorios", "roupas", "tattoos", "acessoriosgeeks", "cospalyers", "mangas"];
+        const categorys = ["acessorios", "roupas", "tattoos"];
         res.status(200).json(categorys);
        
     }

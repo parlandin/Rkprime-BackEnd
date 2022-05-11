@@ -54,7 +54,7 @@ class ProductsController {
         }
     }
     showCategorys(req, res) {
-        const categorys = ["acessorios", "roupas", "tattoos", "acessoriosgeeks", "cospalyers", "mangas"];
+        const categorys = ["acessorios", "roupas", "tattoos"];
         res.status(200).json(categorys);
     }
     async showProductByCategory(req, res) {
