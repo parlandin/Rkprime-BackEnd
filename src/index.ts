@@ -22,7 +22,7 @@ app.use(morgan('combined'))
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors({
-    origin: 'http://rk-prime.vercel.app/'
+    origin: 'https://rk-prime.vercel.app'
 }));
 
 
