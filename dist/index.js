@@ -16,10 +16,12 @@ const morgan_1 = __importDefault(require("morgan"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
 app.use((0, helmet_1.default)());
-app.use((0, morgan_1.default)('combined'));
+app.use((0, morgan_1.default)('tiny'));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: 'https://rk-prime.vercel.app',
+}));
 MongoConnection_1.default.connect();
 app.use(express_1.default.static(path_1.default.resolve(__dirname + '/public')));
 app.use(status_route_1.default);
