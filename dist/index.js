@@ -13,6 +13,7 @@ const cors_1 = __importDefault(require("cors"));
 const path_1 = __importDefault(require("path"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
+const siteAutorization_1 = __importDefault(require("./middleware/siteAutorization"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
 app.use((0, helmet_1.default)());
@@ -23,8 +24,9 @@ app.use((0, cors_1.default)({
     origin: 'https://rk-prime.vercel.app',
 }));
 MongoConnection_1.default.connect();
-app.use(express_1.default.static(path_1.default.resolve(__dirname + '/public')));
+app.use(siteAutorization_1.default);
 app.use(status_route_1.default);
+app.use(express_1.default.static(path_1.default.resolve(__dirname + '/public')));
 app.use(sessions_route_1.default);
 app.use(products_route_1.default);
 app.use(users_route_1.default);
