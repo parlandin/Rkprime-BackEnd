@@ -2,10 +2,8 @@ import { Router}  from "express";
 import ProductsController from "../controllers/products.controller";
 import isSession from "../middleware/session.middle";
 import {uploadFile} from "../services/drive"
-
-
-
 import multerConfig from "../utils/multer";
+
 
 const products = Router();
 products.get("/produtos", ProductsController.showProducts);

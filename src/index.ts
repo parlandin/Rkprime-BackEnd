@@ -15,7 +15,6 @@ const app = express();
 //porta do servidor
 const port = process.env.PORT || 5000;
 
-
 //Configurações do servidor
 app.use(helmet());
 app.use(morgan('tiny'))
@@ -24,7 +23,6 @@ app.use(express.urlencoded({extended: true}));
 app.use(cors({
     origin: 'https://rk-prime.vercel.app',
 }));
-
 
 
 //conectado com o bando de dados
@@ -37,8 +35,6 @@ app.use(express.static(path.resolve(__dirname + '/public')));
 app.use(Session);
 app.use(products);
 app.use(users);
-
-
 
 
 //iniciando o servidor
