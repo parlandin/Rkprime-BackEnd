@@ -31,8 +31,8 @@ class ProductsController {
         try {
             
 
-            const {nome, descricao, preco, categoria, destaque, tags, quantidade} = dateRequest;
-            const newProduct = await productsDB.create({nome, descricao, preco, imagens: img, categoria, destaque, tags, quantidade});
+            const {nome, descricao, preco, categoria, destaque, tags, quantidade, nota} = dateRequest;
+            const newProduct = await productsDB.create({nome, descricao, preco, imagens: img, categoria, destaque, tags, quantidade, nota});
             res.status(201).json({message: "produto cadastrado com sucesso"});
             return;
 
@@ -45,7 +45,7 @@ class ProductsController {
 
     public async showProducts(req: Request, res: Response){
         try {
-            const products = await productsDB.find({em_breve: false}, '_id nome descricao preco imagens categoria quantidade tags destaque');
+            const products = await productsDB.find({em_breve: false}, '_id nome descricao preco imagens categoria quantidade tags destaque nota');
             res.status(200).json(products);
             return;
 

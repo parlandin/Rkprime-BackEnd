@@ -10,6 +10,7 @@ interface ProductInterface extends Document {
     destaque?: boolean; 
     tags: Array<string>;
     quantidade: number;
+    nota: number;
 }
 
 
@@ -46,7 +47,10 @@ const ProductSchema = new Schema({
         type: Array,
         required: false
     }, 
-    cloudinary_id: String
+    nota: {
+        type: Number,
+        required: true
+    }
 	
 })
 
