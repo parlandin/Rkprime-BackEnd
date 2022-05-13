@@ -2,8 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function siteAutorization(req, res, next) {
     const permission = req.headers.referer == "https://rk-prime.vercel.app" ? true : false;
-    if (!permission)
-        return res.status(401).json({ message: "authorization invalid" });
-    return next();
+    return res.status(200).json({ header: req.headers.referer });
 }
 exports.default = siteAutorization;
