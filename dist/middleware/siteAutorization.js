@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function siteAutorization(req, res, next) {
     const permission = req.hostname == "https://rk-prime.vercel.app" || req.hostname == "rk-prime.vercel.app" ? true : false;
-    console.log(permission)
+    console.log(req.hostname)
     if (!permission)
         return res.status(401).json({ message: "authorization invalid" });
     return next();
