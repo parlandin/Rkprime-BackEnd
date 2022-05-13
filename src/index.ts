@@ -8,7 +8,6 @@ import cors from 'cors';
 import path from "path";
 import helmet from "helmet";
 import morgan from "morgan";
-import siteAutorization from "./middleware/siteAutorization";
 
 
 const app = express();
@@ -33,7 +32,6 @@ MongoConnection.connect();
 
 
 //usando as rotas
-app.use(siteAutorization)
 app.use(status)
 app.use(express.static(path.resolve(__dirname + '/public')));
 app.use(Session);
