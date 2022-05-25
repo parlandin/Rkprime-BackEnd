@@ -10,12 +10,12 @@ class Session {
         try {
             const user = await  UserDB.findOne({email: email});
 
-            if(!user) return res.status(404).json({message: "login incorreto"});
+            if(!user) return res.status(403).json({message: "login incorreto"});
 
             const isValidpass = await compare (senha, user?.senha);
 
             if(!isValidpass){
-                return res.status(404).json({message: "login incorreto"});
+                return res.status(403).json({message: "login incorreto"});
             }
             
             const token = sign({}, AuthConfig.JWT.secret_key , {
@@ -28,7 +28,7 @@ class Session {
 
         } catch (error) {
             console.log(error)
-            return res.status(404).json({message: "login incorreto"});
+            return res.status(500).json({message: "error ao fazer login"});
         }
         
 
