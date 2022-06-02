@@ -6,7 +6,9 @@ interface ProductInterface extends Document {
     email: string;
     senha: string;
     perfil_foto: string;
-    cargo?: string; 
+    cargo?: string;
+    recoveryToken: string;
+     
 }
 
 
@@ -28,6 +30,10 @@ const UserSchema = new Schema({
         required: false
     },
     cargo: {
+        type: String,
+        required: false
+    },
+    recoveryToken: {
         type: String,
         required: false
     }

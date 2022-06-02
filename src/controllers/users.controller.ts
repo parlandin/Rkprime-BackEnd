@@ -10,7 +10,6 @@ class UsersController {
         const passwordHash = await hash(senha, 8);
 
         try {
-           
             const newUser = await UserDB.create({nome, email, senha: passwordHash, perfil_foto, cargo});
             res.status(201).json({newUser});
             return;
@@ -66,6 +65,31 @@ class UsersController {
             res.sendStatus(500);
             return;
         }
+    }
+
+    public async recoveryUser(req: Request, res: Response){
+        const {email} = req.body;
+        try {
+            const emailuser = await UserDB.findOne({email: email});
+
+            if(emailuser){
+                //logica do envio de Email
+            }
+
+            res.sendStatus(404)
+        } catch(error){
+            res.sendStatus(500);
+        }
+    }
+
+    public async changePassword(req: Request, res: Response){
+        const {token, password, confirmPassword} = req.body;
+        try {
+
+        } catch(error){
+            res.sendStatus(500);
+        }
+
     }
 
     public async deleteUser(req: Request, res: Response) {
