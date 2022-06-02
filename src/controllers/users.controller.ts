@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import UserDB from "../database/models/user.model";
 import {hash} from "bcrypt";
-import crypto from "crypto";
 import sendEmail from "../services/sendEmail";
+import {sign, verify} from "jsonwebtoken";
+import authConfig from "../config/auth";
 
 class UsersController {
 
@@ -19,7 +20,6 @@ class UsersController {
             console.log(error);
             res.sendStatus(404);
         }
-        
     }
 
     public async showUsers(req: Request, res: Response){
@@ -34,7 +34,6 @@ class UsersController {
             res.sendStatus(404);
             return;
         }
-       
     }
 
     public async showUserById(req: Request, res: Response){
@@ -49,7 +48,6 @@ class UsersController {
             res.sendStatus(500);
             return;
         }
-        
     }
 
     public async updateUser(req: Request, res: Response){
@@ -57,7 +55,8 @@ class UsersController {
             const { id } = req.params;
             
             const {nome, email, senha, perfil_foto, cargo} = req.body;
-            await UserDB.updateOne({_id: id}, {$set: {nome, email, senha, perfil_foto, cargo}});
+            const passwordHash = await hash(senha, 8);
+            await UserDB.updateOne({_id: id}, {$set: {nome, email, passwordHash, perfil_foto, cargo}});
             res.sendStatus(200);
             return;
 
@@ -79,17 +78,20 @@ class UsersController {
                 return;
             }
 
-            const token = crypto.randomBytes(20).toString("hex");
-            const timeExpires = new Date();
-            timeExpires.setHours(timeExpires.getHours() + 1);
-
+            const token = sign({}, authConfig.JWT.secret_key, {
+                subject: String(user._id),
+                expiresIn: "1h"
+            });
+            console.log("token: ", token)
+            const urlToken = encodeURIComponent(token).replaceAll(".", "[-]");
+            
             await UserDB.findByIdAndUpdate(user.id, {
                 "$set": {
-                    passwordResetToken: token,
-                    passwordResetExpires: timeExpires
+                    passwordResetToken: urlToken
                 }
             });
-            await sendEmail(email, token)
+
+            await sendEmail(email, urlToken);
             res.status(200).json({message: "ok"})
 
         } catch(error){
@@ -99,12 +101,47 @@ class UsersController {
 
     public async changePassword(req: Request, res: Response){
         const {token, password, confirmPassword} = req.body;
+        //const {token} = req.body;
         try {
+            const replaceToken = token.replaceAll("[-]", ".");
+            const decodeToken = decodeURIComponent(replaceToken);
+            const isValidToken = verify(decodeToken, authConfig.JWT.secret_key);
+           
+            if(!isValidToken){
+                res.status(401).json({message: "invalid token"});
+                return;
+            }
 
+            if(password !== confirmPassword) {
+                res.status(401).json({message: "error in forgot password"});
+                return;
+            }
+
+            const id = isValidToken.sub;
+            const user = await UserDB.findById(id, "passwordResetToken");
+
+            if(!user) {
+                res.status(401).json({message: "error in forgot password"});
+                return;
+            }
+            
+            if(user.passwordResetToken !== token) {
+                res.status(401).json({message: "error token invalid"});
+                return;
+            }
+
+            const passwordHash = await hash(password, 8);
+
+            await UserDB.findByIdAndUpdate(id ,{"$set": {
+                senha: passwordHash,
+                passwordResetToken: null
+            }})
+            
+            res.sendStatus(200)
         } catch(error){
+            console.log(error)
             res.sendStatus(500);
         }
-
     }
 
     public async deleteUser(req: Request, res: Response) {

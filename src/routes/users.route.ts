@@ -13,6 +13,4 @@ userRouter.put("/users/:id", UsersController.updateUser);
 //userRouter.patch("/produtos/:id", userRouterController.newProduct);
 userRouter.delete("/users/:id", UsersController.deleteUser); 
 
-userRouter.post("/users/forgotpassword", UsersController.forgotPassword);
-
 export default userRouter;

@@ -1,6 +1,6 @@
-import {Request, Response, NextFunction} from "express"
-import {verify} from "jsonwebtoken"
-import AuthConfig from "../config/auth"
+import {Request, Response, NextFunction} from "express";
+import {verify} from "jsonwebtoken";
+import AuthConfig from "../config/auth";
 
 export default function isSession(req: Request, res: Response, next: NextFunction){
     const header = req.headers.authorization;
@@ -15,7 +15,7 @@ export default function isSession(req: Request, res: Response, next: NextFunctio
         return next();
 
     } catch (error){
-        console.log(error)
-        return res.sendStatus(404)
+        console.log(error);
+        return res.sendStatus(404);
     } 
 }

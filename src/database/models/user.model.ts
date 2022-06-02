@@ -1,14 +1,13 @@
 import {Schema, model, Document} from "mongoose";
 
 
-interface ProductInterface extends Document {
+interface userInterface extends Document {
     nome: string;
     email: string;
     senha: string;
     perfil_foto: string;
     cargo?: string;
-    passwordResetToken: string;
-    passwordResetExpires: Date;
+    passwordResetToken?: string;
 }
 
 
@@ -39,12 +38,7 @@ const UserSchema = new Schema({
         type: String,
         required: false,
         select: false
-    },
-    passwordResetExpires: {
-        type: Date,
-        select: false
     }
-	
 })
 
-export default model<ProductInterface>('User', UserSchema);
+export default model<userInterface>('User', UserSchema);
