@@ -7,8 +7,8 @@ interface ProductInterface extends Document {
     senha: string;
     perfil_foto: string;
     cargo?: string;
-    recoveryToken: string;
-     
+    passwordResetToken: string;
+    passwordResetExpires: Date;
 }
 
 
@@ -19,11 +19,13 @@ const UserSchema = new Schema({
 	},
 	email: {
 		type: String,
-		required: true
+		required: true,
+        unique: true
 	},
     senha: {
         type: String,
-        required: true
+        required: true,
+        select: false
     },
     perfil_foto: {
         type: String,
@@ -33,9 +35,14 @@ const UserSchema = new Schema({
         type: String,
         required: false
     },
-    recoveryToken: {
+    passwordResetToken: {
         type: String,
-        required: false
+        required: false,
+        select: false
+    },
+    passwordResetExpires: {
+        type: Date,
+        select: false
     }
 	
 })

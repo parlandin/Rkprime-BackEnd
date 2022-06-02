@@ -8,11 +8,11 @@ userRouter.use(isSession)
 userRouter.get("/users", UsersController.showUsers);
 userRouter.get("/users/:id", UsersController.showUserById);
 
-
 userRouter.post("/users", UsersController.newUser);
 userRouter.put("/users/:id", UsersController.updateUser);
 //userRouter.patch("/produtos/:id", userRouterController.newProduct);
 userRouter.delete("/users/:id", UsersController.deleteUser); 
 
+userRouter.post("/users/forgotpassword", UsersController.forgotPassword);
 
 export default userRouter;

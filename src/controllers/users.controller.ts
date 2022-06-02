@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import UserDB from "../database/models/user.model";
-import {hash} from "bcrypt"
-
+import {hash} from "bcrypt";
+import crypto from "crypto";
+import sendEmail from "../services/sendEmail";
 
 class UsersController {
 
@@ -67,16 +68,30 @@ class UsersController {
         }
     }
 
-    public async recoveryUser(req: Request, res: Response){
+    public async forgotPassword(req: Request, res: Response){
         const {email} = req.body;
-        try {
-            const emailuser = await UserDB.findOne({email: email});
 
-            if(emailuser){
-                //logica do envio de Email
+        try {
+            const user = await UserDB.findOne({email: email});
+
+            if(!user){
+                res.status(404).json({message: "user not found"})
+                return;
             }
 
-            res.sendStatus(404)
+            const token = crypto.randomBytes(20).toString("hex");
+            const timeExpires = new Date();
+            timeExpires.setHours(timeExpires.getHours() + 1);
+
+            await UserDB.findByIdAndUpdate(user.id, {
+                "$set": {
+                    passwordResetToken: token,
+                    passwordResetExpires: timeExpires
+                }
+            });
+            await sendEmail(email, token)
+            res.status(200).json({message: "ok"})
+
         } catch(error){
             res.sendStatus(500);
         }

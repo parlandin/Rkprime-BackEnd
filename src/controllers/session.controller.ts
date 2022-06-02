@@ -7,11 +7,12 @@ import AuthConfig from "../config/auth";
 class Session {
     public async createSession(req: Request, res: Response){
         const {email, senha} = req.body;
+        
         try {
-            const user = await  UserDB.findOne({email: email});
+            const user = await  UserDB.findOne({email: email}, '_id nome perfil_foto cargo senha');
 
             if(!user) return res.status(403).json({message: "login incorreto"});
-
+            
             const isValidpass = await compare (senha, user?.senha);
 
             if(!isValidpass){
