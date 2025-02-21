@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import productsDB from "../database/models/product.model";
-import { deleteFile } from "../services/drive";
+
 
 class ProductsController {
     public async newProduct(req: Request, res: Response) {
@@ -130,10 +130,10 @@ class ProductsController {
         const { id } = req.params;
         try {
             const product = await productsDB.findById(id).select('imagens');
-
+/* 
             if (product?.imagens?.length > 0) {
                 await deleteFile(product.imagens[0]);
-            }
+            } */
 
             await productsDB.findByIdAndDelete(id);
             res.sendStatus(200);
